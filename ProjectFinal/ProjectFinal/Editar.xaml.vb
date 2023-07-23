@@ -1,5 +1,6 @@
 ﻿Imports Microsoft.Win32
 Imports MySql.Data.MySqlClient
+Imports Org.BouncyCastle.Asn1.Esf
 
 Public Class Editar
     ' Aquí puedes hacer lo que necesites con los datos.
@@ -126,56 +127,111 @@ Public Class Editar
     End Sub
 
     Private Sub Button_Click_2(sender As Object, e As RoutedEventArgs)
-        ' Verificar si los campos están vacíos
-        If String.IsNullOrEmpty(nombreTextBox.Text) OrElse String.IsNullOrEmpty(descripcionTextBox.Text) OrElse FechaPicker.SelectedDate Is Nothing OrElse String.IsNullOrEmpty(imagenTextBox.Text) Then
-            MessageBox.Show("Por favor, completa todos los campos.")
-            Return
-        End If
+        '' Verificar si los campos están vacíos
+        'If String.IsNullOrEmpty(nombreTextBox.Text) OrElse String.IsNullOrEmpty(descripcionTextBox.Text) OrElse FechaPicker.SelectedDate Is Nothing OrElse String.IsNullOrEmpty(imagenTextBox.Text) Then
+        '    MessageBox.Show("Por favor, completa todos los campos.")
+        '    Return
+        'End If
 
-        Try
+        'Try
+        '    ' Crear la conexión
+        '    Using conn As New MySqlConnection("Server=localhost;Database=modelo_captacion_datos_fauna;Uid=root;Pwd=123789;")
+        '        conn.Open()
+
+        '        ' Comando SQL
+        '        Dim cmd As New MySqlCommand()
+        '        cmd.Connection = conn
+
+        '        ' Configurar el CommandText con tu consulta SQL
+        '        cmd.CommandText = "UPDATE mi_tabla SET nombre = @nombre, descripcion = @descripcion, fecha = @fecha, imagen = @imagen WHERE id = @id"
+
+        '        ' Definir los parámetros de manera explícita
+        '        Dim paramNombre As New MySqlParameter("@nombre", MySqlDbType.VarChar)
+        '        paramNombre.Value = nombreTextBox.Text
+        '        cmd.Parameters.Add(paramNombre)
+
+        '        Dim paramDescripcion As New MySqlParameter("@descripcion", MySqlDbType.VarChar)
+        '        paramDescripcion.Value = descripcionTextBox.Text
+        '        cmd.Parameters.Add(paramDescripcion)
+
+        '        Dim paramFecha As New MySqlParameter("@fecha", MySqlDbType.Date)
+        '        paramFecha.Value = FechaPicker.SelectedDate.Value
+        '        cmd.Parameters.Add(paramFecha)
+
+        '        Dim paramImagen As New MySqlParameter("@imagen", MySqlDbType.VarChar)
+        '        paramImagen.Value = imagenTextBox.Text
+        '        cmd.Parameters.Add(paramImagen)
+
+        '        'Dim paramId As New MySqlParameter("@id", MySqlDbType.Int32)
+        '        'paramId.Value = Integer.Parse(idTextBox.Text)
+        '        'cmd.Parameters.Add(paramId)
+
+        '        ' Imprimir la consulta SQL
+        '        System.Diagnostics.Debug.WriteLine(cmd.CommandText)
+
+        '        ' Ejecutar el comando
+        '        cmd.ExecuteNonQuery()
+        '        ' Mostrar mensaje de éxito
+        '        MessageBox.Show("Los datos se han actualizado correctamente.")
+        '    End Using
+        'Catch ex As Exception
+        '    ' Si algo sale mal, muestra un mensaje de error
+        '    MessageBox.Show("Ocurrió un error al actualizar los datos: " & ex.Message)
+        'End Try
+
+        If ValidarCampos() Then
             ' Crear la conexión
-            Using conn As New MySqlConnection("Server=localhost;Database=modelo_captacion_datos_fauna;Uid=root;Pwd=123789;")
-                conn.Open()
+            Try
+                Using conn As New MySqlConnection("Server=localhost;Database=modelo_captacion_datos_fauna;Uid=root;Pwd=123789;")
+                    conn.Open()
 
-                ' Comando SQL
-                Dim cmd As New MySqlCommand()
-                cmd.Connection = conn
+                    ' Comando SQL
+                    Dim cmd As New MySqlCommand()
+                    cmd.Connection = conn
 
-                ' Configurar el CommandText con tu consulta SQL
-                cmd.CommandText = "UPDATE mi_tabla SET nombre = @nombre, descripcion = @descripcion, fecha = @fecha, imagen = @imagen WHERE id = @id"
+                    ' Configurar el CommandText con tu consulta SQL
+                    'cmd.CommandText = "UPDATE mi_tabla (nombre, descripcion, fecha, imagen) VALUES (@nombre, @descripcion, @fecha, @imagen)"
+                    'cmd.Parameters.AddWithValue("@nombre", nombreTextBox.Text)
+                    'cmd.Parameters.AddWithValue("@descripcion", descripcionTextBox.Text)
+                    'cmd.Parameters.AddWithValue("@fecha", FechaPicker.SelectedDate.Value.ToString("yyyy-MM-dd"))
+                    'cmd.Parameters.AddWithValue("@imagen", imagenTextBox.Text)
+                    ' Configurar el CommandText con tu consulta SQL
+                    cmd.CommandText = "UPDATE mi_tabla SET nombre = @nombre, descripcion = @descripcion, fecha = @fecha, imagen = @imagen WHERE id = @id"
 
-                ' Definir los parámetros de manera explícita
-                Dim paramNombre As New MySqlParameter("@nombre", MySqlDbType.VarChar)
-                paramNombre.Value = nombreTextBox.Text
-                cmd.Parameters.Add(paramNombre)
+                    cmd.Parameters.AddWithValue("@id", IdTextBox.Text) ' Asegúrate de que estás obteniendo el valor de 'id' desde algún lugar
+                    cmd.Parameters.AddWithValue("@nombre", nombreTextBox.Text)
+                    cmd.Parameters.AddWithValue("@descripcion", descripcionTextBox.Text)
+                    cmd.Parameters.AddWithValue("@fecha", FechaPicker.SelectedDate.Value.ToString("yyyy-MM-dd"))
+                    cmd.Parameters.AddWithValue("@imagen", imagenTextBox.Text)
+                    System.Diagnostics.Debug.WriteLine(cmd.CommandText)
 
-                Dim paramDescripcion As New MySqlParameter("@descripcion", MySqlDbType.VarChar)
-                paramDescripcion.Value = descripcionTextBox.Text
-                cmd.Parameters.Add(paramDescripcion)
+                    ' Configurar el CommandText con tu consulta SQL
 
-                Dim paramFecha As New MySqlParameter("@fecha", MySqlDbType.Date)
-                paramFecha.Value = FechaPicker.SelectedDate.Value
-                cmd.Parameters.Add(paramFecha)
+                    'llave primaria de la llave "nombre"
+                    'cmd.CommandText = "UPDATE mi_tabla SET descripcion = @descripcion, fecha = @fecha, imagen = @imagen WHERE nombre = @nombre"
+                    'cmd.Parameters.AddWithValue("@nombre", nombreTextBox.Text)
+                    'cmd.Parameters.AddWithValue("@descripcion", descripcionTextBox.Text)
+                    'cmd.Parameters.AddWithValue("@fecha", FechaPicker.SelectedDate.Value.ToString("yyyy-MM-dd"))
+                    'cmd.Parameters.AddWithValue("@imagen", imagenTextBox.Text)
 
-                Dim paramImagen As New MySqlParameter("@imagen", MySqlDbType.VarChar)
-                paramImagen.Value = imagenTextBox.Text
-                cmd.Parameters.Add(paramImagen)
 
-                'Dim paramId As New MySqlParameter("@id", MySqlDbType.Int32)
-                'paramId.Value = Integer.Parse(idTextBox.Text)
-                'cmd.Parameters.Add(paramId)
 
-                ' Imprimir la consulta SQL
-                System.Diagnostics.Debug.WriteLine(cmd.CommandText)
+                    ' Ejecuta el comando
+                    cmd.ExecuteNonQuery()
+                    ' Notificar al usuario que los datos se guardaron correctamente
+                    MessageBox.Show("Los datos se han guardado correctamente en la base de datos.")
+                    nombreTextBox.Text = String.Empty
+                    descripcionTextBox.Text = String.Empty
+                    FechaPicker.SelectedDate = Nothing
+                    imagenTextBox.Text = String.Empty
+                End Using
+            Catch ex As Exception
+                ' Si algo sale mal, muestra un mensaje de error
+                MessageBox.Show("Ocurrió un error al guardar los datos: " & ex.Message)
+            End Try
 
-                ' Ejecutar el comando
-                cmd.ExecuteNonQuery()
-                ' Mostrar mensaje de éxito
-                MessageBox.Show("Los datos se han actualizado correctamente.")
-            End Using
-        Catch ex As Exception
-            ' Si algo sale mal, muestra un mensaje de error
-            MessageBox.Show("Ocurrió un error al actualizar los datos: " & ex.Message)
-        End Try
+
+        End If
     End Sub
+
 End Class

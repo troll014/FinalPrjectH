@@ -79,11 +79,19 @@ Public Class Agregar
 
         'Dim fecha As DateTime
         ' Verificar el campo nombre
+
+        If String.IsNullOrEmpty(IdTextBox.Text) Then
+            IdTextBox.BorderBrush = Brushes.Red
+            MessageBox.Show("El campo Nombre está vacío.")
+            valido = False
+        End If
+
         If String.IsNullOrEmpty(nombreTextBox.Text) Then
             nombreTextBox.BorderBrush = Brushes.Red
             MessageBox.Show("El campo Nombre está vacío.")
             valido = False
         End If
+
 
         ' Verificar el campo descripción
         If String.IsNullOrEmpty(descripcionTextBox.Text) Then
@@ -127,13 +135,6 @@ Public Class Agregar
         '    ' Código para agregar el item
         'End If
         ' Recoger datos del formulario
-
-
-
-
-
-
-
         ' Primero, verifica si los campos son válidos
         If ValidarCampos() Then
             ' Crear la conexión
@@ -146,7 +147,8 @@ Public Class Agregar
                     cmd.Connection = conn
 
                     ' Configurar el CommandText con tu consulta SQL
-                    cmd.CommandText = "INSERT INTO mi_tabla (nombre, descripcion, fecha, imagen) VALUES (@nombre, @descripcion, @fecha, @imagen)"
+                    cmd.CommandText = "INSERT INTO mi_tabla (id, nombre, descripcion, fecha, imagen) VALUES (@id, @nombre, @descripcion, @fecha, @imagen)"
+                    cmd.Parameters.AddWithValue("@id", IdTextBox.Text)
                     cmd.Parameters.AddWithValue("@nombre", nombreTextBox.Text)
                     cmd.Parameters.AddWithValue("@descripcion", descripcionTextBox.Text)
                     cmd.Parameters.AddWithValue("@fecha", FechaPicker.SelectedDate.Value.ToString("yyyy-MM-dd"))
@@ -158,6 +160,7 @@ Public Class Agregar
                     cmd.ExecuteNonQuery()
                     ' Notificar al usuario que los datos se guardaron correctamente
                     MessageBox.Show("Los datos se han guardado correctamente en la base de datos.")
+                    IdTextBox.Text = String.Empty
                     nombreTextBox.Text = String.Empty
                     descripcionTextBox.Text = String.Empty
                     FechaPicker.SelectedDate = Nothing
