@@ -58,13 +58,9 @@ Public Class Editar
         Return valido
     End Function
 
-    Private Sub nombreTextBox_TextChanged(sender As Object, e As TextChangedEventArgs) Handles nombreTextBox.TextChanged
 
-    End Sub
 
-    Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
 
-    End Sub
     Private Function ValidarCampos() As Boolean
         Dim valido As Boolean = True
         'Dim fecha As DateTime = FechaPicker.SelectedDate.Value
@@ -146,22 +142,34 @@ Public Class Editar
                 cmd.Connection = conn
 
                 ' Configurar el CommandText con tu consulta SQL
-                Dim query As String = "UPDATE mi_tabla SET nombre = '" & nombreTextBox.Text & "', descripcion = '" & descripcionTextBox.Text & "', fecha = '" & FechaPicker.SelectedDate.Value.ToString("yyyy-MM-dd") & "', imagen = '" & imagenTextBox.Text & "' WHERE id = @id"
-                Debug.WriteLine(query)
+                cmd.CommandText = "UPDATE mi_tabla SET nombre = @nombre, descripcion = @descripcion, fecha = @fecha, imagen = @imagen WHERE id = @id"
 
-                cmd.CommandText = query
-                'cmd.Parameters.AddWithValue("@id", idTextBox.Text)
+                ' Definir los parámetros de manera explícita
+                Dim paramNombre As New MySqlParameter("@nombre", MySqlDbType.VarChar)
+                paramNombre.Value = nombreTextBox.Text
+                cmd.Parameters.Add(paramNombre)
 
-                ' Ejecuta el comando
+                Dim paramDescripcion As New MySqlParameter("@descripcion", MySqlDbType.VarChar)
+                paramDescripcion.Value = descripcionTextBox.Text
+                cmd.Parameters.Add(paramDescripcion)
+
+                Dim paramFecha As New MySqlParameter("@fecha", MySqlDbType.Date)
+                paramFecha.Value = FechaPicker.SelectedDate.Value
+                cmd.Parameters.Add(paramFecha)
+
+                Dim paramImagen As New MySqlParameter("@imagen", MySqlDbType.VarChar)
+                paramImagen.Value = imagenTextBox.Text
+                cmd.Parameters.Add(paramImagen)
+
+                'Dim paramId As New MySqlParameter("@id", MySqlDbType.Int32)
+                'paramId.Value = Integer.Parse(idTextBox.Text)
+                'cmd.Parameters.Add(paramId)
+
+                ' Imprimir la consulta SQL
+                System.Diagnostics.Debug.WriteLine(cmd.CommandText)
+
+                ' Ejecutar el comando
                 cmd.ExecuteNonQuery()
-
-                ' Borrar los campos
-                nombreTextBox.Text = ""
-                descripcionTextBox.Text = ""
-                FechaPicker.SelectedDate = Nothing
-                imagenTextBox.Text = ""
-                previewImage.Source = Nothing
-
                 ' Mostrar mensaje de éxito
                 MessageBox.Show("Los datos se han actualizado correctamente.")
             End Using

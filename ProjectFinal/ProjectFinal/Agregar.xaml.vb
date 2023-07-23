@@ -151,6 +151,8 @@ Public Class Agregar
                     cmd.Parameters.AddWithValue("@descripcion", descripcionTextBox.Text)
                     cmd.Parameters.AddWithValue("@fecha", FechaPicker.SelectedDate.Value.ToString("yyyy-MM-dd"))
                     cmd.Parameters.AddWithValue("@imagen", imagenTextBox.Text)
+                    System.Diagnostics.Debug.WriteLine(cmd.CommandText)
+
 
                     ' Ejecuta el comando
                     cmd.ExecuteNonQuery()
