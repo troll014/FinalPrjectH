@@ -11,8 +11,8 @@
             <TextBlock Text="Explorar" FontSize="30" Foreground="#A0522D" HorizontalAlignment="Left" Margin="60,10,0,10"/>
 
             <Grid>
-                <!--<TextBox x:Name="searchTextBox" TextChanged="SearchTextBox_TextChanged" Background="Transparent" Padding="5" Foreground="#A0522D" />-->
-                <TextBlock IsHitTestVisible="False" Text="Buscar..." Foreground="Gray" Padding="5" FontStyle="Italic">
+                <TextBox x:Name="searchTextBox" TextChanged="SearchTextBox_TextChanged" Background="Transparent" Padding="5" Foreground="#A0522D" />
+                <TextBlock IsHitTestVisible="False" Text="Buscar especies" Foreground="Gray" Padding="5" FontStyle="Italic">
                     <TextBlock.Style>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -26,7 +26,7 @@
                 </TextBlock>
             </Grid>
 
-            <Button Content="Buscar"  Width="120" Height="30" HorizontalAlignment="Center" Margin="10,10,10,0" Foreground="#DEB887" Background="#A0522D" BorderThickness="0" BorderBrush="Transparent" Padding="10,5"/>
+            <Button Content="Buscar"  Width="120" Height="30" HorizontalAlignment="Center" Margin="10,10,10,0" Foreground="#DEB887" Background="#A0522D" BorderThickness="0" BorderBrush="Transparent" Padding="10,5" Click="Button_Click"/>
 
             <DataGrid Name="faunaDataGrid" AutoGenerateColumns="True" Margin="10,10,10,0">
                 <DataGrid.Background>

@@ -1,4 +1,41 @@
-﻿Public Class Eliminar
+﻿Imports MySql.Data.MySqlClient
+
+Public Class Eliminar
+    Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
+        Dim id As Integer
+
+        If Not Integer.TryParse(IdTextBox.Text, id) Then
+            MessageBox.Show("Por favor ingresa una ID válida.")
+            Return
+        End If
+
+        If MessageBox.Show("¿Está seguro de que desea eliminar este registro?", "Advertencia", MessageBoxButton.YesNo, MessageBoxImage.Warning) = MessageBoxResult.Yes Then
+            ' Crear la conexión
+            Try
+                Using conn As New MySqlConnection("Server=localhost;Database=modelo_captacion_datos_fauna;Uid=root;Pwd=123789;")
+                    conn.Open()
+
+                    ' Comando SQL
+                    Dim cmd As New MySqlCommand()
+                    cmd.Connection = conn
+
+                    ' Configurar el CommandText con tu consulta SQL
+                    cmd.CommandText = "DELETE FROM mi_tabla WHERE id = @id"
+                    cmd.Parameters.AddWithValue("@id", id)
+
+                    ' Ejecuta el comando
+                    cmd.ExecuteNonQuery()
+
+                    ' Notificar al usuario que los datos se han eliminado correctamente
+                    MessageBox.Show("Los datos se han eliminado correctamente de la base de datos.")
+
+                End Using
+            Catch ex As Exception
+                ' Si algo sale mal, muestra un mensaje de error
+                MessageBox.Show("Ocurrió un error al eliminar los datos: " & ex.Message)
+            End Try
+        End If
+    End Sub
     'Private Function ValidarEliminar() As Boolean
     '    Dim valido As Boolean = True
 

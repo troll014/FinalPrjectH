@@ -10,12 +10,12 @@
         <StackPanel>
             <TextBlock Text="Eliminar" FontSize="30" Foreground="#A0522D" HorizontalAlignment="Left" Margin="60,10,0,10"/>
 
-            <Label Content="Nombre:" Foreground="#A0522D" Margin="10,10,10,0"/>
+            <Label Content="Id:" Foreground="#A0522D" Margin="10,10,10,0"/>
             <Border BorderBrush="#A0522D" BorderThickness="0,0,0,2" Margin="10,0,10,10">
-                <TextBox Name="nombreTextBox" Height="25"  Background="Transparent" Foreground="#A0522D"/>
+                <TextBox Name="IdTextBox" Height="25"  Background="Transparent" Foreground="#A0522D"/>
             </Border>
 
-            <Button Content="Eliminar" Width="120" Height="30" HorizontalAlignment="Center" Margin="10,10,10,0" Foreground="#DEB887" Background="#A0522D" BorderThickness="0" BorderBrush="Transparent" Padding="10,5"  />
+            <Button Content="Eliminar" Width="120" Height="30" HorizontalAlignment="Center" Margin="10,10,10,0" Foreground="#DEB887" Background="#A0522D" BorderThickness="0" BorderBrush="Transparent" Padding="10,5" Click="Button_Click"  />
         </StackPanel>
     </Grid>
 </Page>
