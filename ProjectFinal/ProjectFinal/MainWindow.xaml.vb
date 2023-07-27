@@ -81,4 +81,11 @@ Class MainWindow
         MainContent.Navigate(New Configuracion())
         ConfiguracionButton.Background = New SolidColorBrush(CType(ColorConverter.ConvertFromString("#ADD8E6"), Color))
     End Sub
+    Private Sub Minimize_Click(sender As Object, e As RoutedEventArgs)
+        Me.WindowState = WindowState.Minimized
+    End Sub
+
+    Private Sub Close_Click(sender As Object, e As RoutedEventArgs)
+        Me.Close()
+    End Sub
 End Class

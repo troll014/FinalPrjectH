@@ -1,6 +1,7 @@
 ﻿Imports MySql.Data.MySqlClient
 
-Public Class Eliminar
+Class Eliminar
+
     Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
         Dim id As Integer
 
@@ -60,4 +61,30 @@ Public Class Eliminar
     '        ' Código para eliminar el registro
     '    End If
     'End Sub
+    Private Sub LoadTablesIntoComboBox()
+        ' Crea una nueva conexión con la base de datos
+        Using conn As New MySqlConnection("Server=localhost;Database=modelo_captacion_datos_fauna;Uid=root;Pwd=123789;")
+            conn.Open()
+
+            ' Comando SQL para obtener todos los nombres de tabla
+            Dim cmd As New MySqlCommand("SHOW TABLES", conn)
+
+            ' Ejecuta el comando y obtén los resultados
+            Dim reader As MySqlDataReader = cmd.ExecuteReader()
+
+            ' Limpia el ComboBox antes de llenarlo
+            ExistingTableComboBox.Items.Clear()
+
+            ' Agrega cada nombre de tabla al ComboBox
+            While reader.Read()
+                ExistingTableComboBox.Items.Add(reader(0).ToString())
+            End While
+        End Using
+    End Sub
+
+    Private Sub Page_Loaded(sender As Object, e As RoutedEventArgs)
+        ' Cargar todas las tablas en el ComboBox al cargar la página
+        LoadTablesIntoComboBox()
+    End Sub
+
 End Class
